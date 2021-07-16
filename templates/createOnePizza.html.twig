@@ -20,7 +20,7 @@
 
 
     <div class='col-sm-4 col-md-4'>
-        <form action={{ path('insertOnePizza') }} method="POST">
+        <form enctype="multipart/form-data" action={{ path('insertOnePizza') }} method="POST">
 
             <div class="form-group">
                 <input class="form-control" type="file" name="photo" id="photo">

@@ -14,7 +14,7 @@ class PizzaController extends AbstractController
      */
     public function indexallpizza()
     {
-        $con = mysqli_connect('localhost', 'pizza', '', 'pizzaDB');
+        $con = mysqli_connect('localhost', 'pizza', '', 'pizzadb');
         mysqli_query($con, "SET CHARACTER SET 'utf8'");
         /****************SELECT INFO PIZZA**********************/
         $sql_req = "select * from pizza;";
@@ -42,7 +42,7 @@ class PizzaController extends AbstractController
      */
     public function indexonePizza($id)
     {
-        $con = mysqli_connect('localhost', 'pizza', '', 'pizzaDB');
+        $con = mysqli_connect('localhost', 'pizza', '', 'pizzadb');
         mysqli_query($con, "SET CHARACTER SET 'utf8'");
         /****************SELECT INFO PIZZA**********************/
         $sql_req = "select * from pizza where NroPizz =" . $id;
@@ -68,7 +68,7 @@ class PizzaController extends AbstractController
      */
     public function modifOnePizza($id)
     {
-        $con = mysqli_connect('localhost', 'pizza', '', 'pizzaDB');
+        $con = mysqli_connect('localhost', 'pizza', '', 'pizzadb');
         mysqli_query($con, "SET CHARACTER SET 'utf8'");
         /****************SELECT INFO PIZZA**********************/
         $sql_req = "select * from pizza where NroPizz =" . $id;
@@ -98,7 +98,7 @@ class PizzaController extends AbstractController
 
         $request = $request->request->all();
 
-        $con = mysqli_connect('localhost', 'pizza', '', 'pizzaDB');
+        $con = mysqli_connect('localhost', 'pizza', '', 'pizzadb');
         mysqli_query($con, "SET CHARACTER SET 'utf8'");
 
         /****************UPDATE INFO PIZZA**********************/
@@ -130,7 +130,7 @@ class PizzaController extends AbstractController
     public function DeleteOnePizza($id)
     {
 
-        $con = mysqli_connect('localhost', 'pizza', '', 'pizzaDB');
+        $con = mysqli_connect('localhost', 'pizza', '', 'pizzadb');
         mysqli_query($con, "SET CHARACTER SET 'utf8'");
 
         /****************UPDATE INFO PIZZA**********************/
@@ -178,16 +178,20 @@ class PizzaController extends AbstractController
 
         dump($request);
 
-        $con = mysqli_connect('localhost', 'pizza', '', 'pizzaDB');
+        $con = mysqli_connect('localhost', 'pizza', '', 'pizzadb');
         mysqli_query($con, "SET CHARACTER SET 'utf8'");
 
         /****************UPDATE INFO PIZZA**********************/
         $sql_req = "INSERT INTO pizza(DesignPizz, TarifPizz) VALUES ('" . $request['designation'] . "', '" . $request['tarif'] . "')";
-
         $req = mysqli_query($con, $sql_req);
-        dump($req);
+        
+        $sql_req = "SELECT LAST_INSERT_ID()";
+        $req = mysqli_query($con, $sql_req);
 
+        dump($req);
+        
         mysqli_close($con);
+        die();
 
         if ($req) {
             $this->addFlash(
@@ -201,6 +205,23 @@ class PizzaController extends AbstractController
             );
         }
 
+        
+        $uploaddir = "./../public/images/";
+        $uploadfile = $uploaddir . basename($_FILES['photo']['name']);
+
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadfile)) {
+            $this->addFlash(
+                'success',
+                'Image uploader'
+            );
+        } else {
+            $this->addFlash(
+                'warning',
+                'Impossible d\'uploader l\'image'
+            );
+        }
+
+        rename($uploadfile, $uploaddir . '27.jpg');
 
 
         return $this->redirectToRoute('pizzaAll');
