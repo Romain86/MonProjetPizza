@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ titre }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/pizza.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+
+
+    <div class='jumbotron'>
+        <h1 class='text-center'>ma liste de Pizzas</h1>
+        <p class='text-center'>Bootstrap is the most popular HTML, CSS...</p>
+
+        <a class='create btn btn-info' href={{ path('createOnePizza') }}>Créer Pizza</a>
+
+    </div>
+
+    <div style="width: 100%;">
+
+        {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning" style="width: 100%;">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success" style="width: 100%;">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    
+    
+    <div class='container'>
+
+        {% for pizza in tablopizza %}
+
+
+        <div class='col-sm-4 col-md-4'>
+
+            <img src='./images/{{ pizza.NroPizz}}.jpg'>
+
+            <div class='description'>
+                <h2><b>{{ pizza.DesignPizz}}</b></h2>
+                <p><u>Prix :</u> {{ pizza.TarifPizz}} euros</p>
+
+                <a class='btn btn-info' href={{ path("modifOnePizza", { 'id' : pizza.NroPizz}) }}>Modifier</a>
+                <a class='btn btn-info' href={{ path("deleteOnePizza", { 'id' : pizza.NroPizz}) }}>Supprimer</a>
+                <a class='btn btn-info' href={{ path("OnePizza", { 'id' : pizza.NroPizz}) }}>Editer</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="jumbotron">
+        <p>footer copryright by Romain </p>
+    </div>
+
+</body>
+
+</html>
